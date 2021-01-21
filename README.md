@@ -114,7 +114,7 @@ Get the pods
 ```
 kubectl get pods
 ```
-It will create the container inside kubernates deployment then it will run os this is how you can deploy in kubernates.
+It will create the container inside kubernates deployment then it will run successfully, this is how you can deploy in kubernates.
 
 
 
