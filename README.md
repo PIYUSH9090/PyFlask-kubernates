@@ -1,41 +1,123 @@
-unset DOCKER_HOST
-unset DOCKER_TLS_VERIFY
-unset DOCKER_TLS_PATH
+we will see how to run the 'PyFlask app' in flask then we will deploy it in kubernates with the help of docker.
 
-Maheshs-MBP-3:PyFlaskSample2 maheshrajannan$ sudo docker build -t myimage .
-Sending build context to Docker daemon  67.58kB
-Step 1/9 : FROM python:3.6.6-alpine
- ---> a78e257617d1
-Step 2/9 : COPY src /app
- ---> Using cache
- ---> 64deeaa0244f
-Step 3/9 : WORKDIR /app
- ---> Using cache
- ---> ad714ac04efc
-Step 4/9 : RUN apk update && apk add libressl-dev libffi-dev gcc musl-dev
- ---> Using cache
- ---> 72e80a0ff6c8
-Step 5/9 : RUN pip3 install -r requirements.txt
- ---> Using cache
- ---> 193a19f7077a
-Step 6/9 : RUN python3 -m nltk.downloader punkt
- ---> Using cache
- ---> 41891844c4f4
-Step 7/9 : EXPOSE 5000
- ---> Using cache
- ---> 6c410679cd1f
-Step 8/9 : ENTRYPOINT ["python3"]
- ---> Using cache
- ---> f4380733849a
-Step 9/9 : CMD ["analyse.py"]
- ---> Running in d29eed13770f
-Removing intermediate container d29eed13770f
- ---> 0d53764fd009
-Successfully built 0d53764fd009
-Successfully tagged myimage:latest
-Maheshs-MBP-3:PyFlaskSample2 maheshrajannan$ sudo docker run -d -p 5000:5000 myimage
-7183e177e7cbc2a790ae3ef134f2b541ac224989821b01f4d481877925e7b6be
-Maheshs-MBP-3:PyFlaskSample2 maheshrajannan$ sudo docker ps
-CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                    NAMES
-7183e177e7cb        myimage             "python3 analyse.py"   4 seconds ago       Up 3 seconds        0.0.0.0:5000->5000/tcp   priceless_hermann
-Maheshs-MBP-3:PyFlaskSample2 maheshrajannan$ sudo curl http://localhost:5000
+
+
+First clone my repo : https://github.com/PIYUSH9090/hello-python-kubernates
+
+1) Then you will get set all the folder and path.
+
+```
+cd src
+```
+First run it locally
+```
+pip install -r requirements.txt
+python main.py
+```
+
+2) Create an image- deploy in docker container
+
+At your command line or shell, in the hello-python/app directory, build the image with the following command:
+```
+docker build -t PyFlask .
+```
+
+This will make the image file so if want to check that out you use this command:
+```
+docker image ls
+```
+You will get image created before a moment.
+
+Running in Docker 
+
+Now if we want to run this in docker 
+```
+docker run -p 5001:5000 PyFlask
+```
+
+After then we have to push this docker image to docker hub with this command, we can push docker with 2 command 
+
+```
+docker image tag PyFlask piyush9090/PyFlask:latest
+```
+it means :- docker image tag <docker image name> <dockerhub username/docker image name:latest>
+    
+Secound command is 
+```
+docker push piyush9090/PyFlask:latest
+```
+
+Now you will get this image intop your docker hub account. You can pull from there also whenever you want.
+
+
+3) Running in Kubernetes - minikube
+
+```
+kubectl version
+```
+If you don’t see a reply with a Client and Server version, you’ll need to install and configure it.
+
+
+Start the minikube with this command
+```
+minikube start
+```
+
+Then also open dashboard with this command
+```
+minikube dashboard
+```
+
+Now you are working with Kubernetes! You can see the node by typing:
+```
+kubectl get nodes
+```
+
+First you need to authenticate your google cloud
+```
+gcloud auth login
+```
+
+ We have to create first project in google cloud gcloud projects create [PROJECT_ID] --name=[PROJECT_NAME]
+```
+gcloud projects create pyflask --name=pyflask-62
+```
+If you already have any project in gcloud then Let's initialize the google cloud
+```
+gcloud init
+```
+Now if we want to deploy in minikube let's deploy it with yaml file
+```
+kubectl apply -f deployment.yaml
+```
+
+4) If you want to deploy it via gcloud kubernates -Gcloud kubernates
+
+Now let's create the cluster of kubernates gcloud container clusters create [CLUSTER_NAME] --num-nodes=2
+```
+gcloud container clusters create translator --num-nodes=2 --zone us-east1-b
+```
+
+After creating cluster we should give the permission(credentials) for that container cluster
+```
+gcloud container clusters get-credentials translator --zone us-east1-b --project pyflask-62
+```
+
+Then you have added already yaml file so run this command
+
+```
+kubectl apply -f deployment.yaml
+```
+You can see the pods are running if you execute the following command:
+
+Get the pods
+```
+kubectl get pods
+```
+It will create the container inside kubernates deployment then it will run os this is how you can deploy in kubernates.
+
+
+
+
+
+Thankyou ...
