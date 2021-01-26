@@ -108,6 +108,16 @@ Then you have added already yaml file so run this command
 ```
 kubectl apply -f deployment.yaml
 ```
+
+
+now you have to expose the deployment so we can run it in our browser with this command
+Here pyflask is app name
+```
+kubectl expose deployment pyflask --type=LoadBalancer --port 5000
+```
+
+After than you can check the direct services & ingress, there is 1 link with port which is take you directly in the browser and show the our deployment running.
+
 You can see the pods are running if you execute the following command:
 
 Get the pods
