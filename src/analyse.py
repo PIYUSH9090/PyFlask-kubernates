@@ -1,14 +1,11 @@
-# Importing some useful libraries
-from textblob import TextBlob
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 
-# App name
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return "hello world"
 
-# Run as a local host at 5000 port
-if __name__ == '__main__':
+@app.route("/")
+def dummy_api():
+	return jsonify(data="Hey Piyush")
+
+if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

@@ -9,8 +9,6 @@ WORKDIR /app
 # Try removing libressl-dev and/or libffi-dev
 RUN apk update && apk add libressl-dev libffi-dev gcc musl-dev
 RUN pip install -r requirements.txt
-# Without this you will get NLTK not found in docker logs.
-RUN python -m nltk.downloader punkt
 # It will create local host at port 5000
 EXPOSE 5000
 # entrypoint means special executed command 

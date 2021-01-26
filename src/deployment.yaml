@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: pyflask-service
+  name: pyflask_api-service
 spec:
   selector:
-    app: pyflask
+    app: pyflask_api
   ports:
   - protocol: "TCP"
     port: 6000
@@ -15,20 +15,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pyflask
+  name: pyflask_api
 spec:
   selector:
     matchLabels:
-      app: pyflask
+      app: pyflask_api
   replicas: 2
   template:
     metadata:
       labels:
-        app: pyflask
+        app: pyflask_api
     spec:
       containers:
-      - name: pyflask
-        image: piyush9090/pyflask
+      - name: pyflask_api
+        image: piyush9090/pyflask_api
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
